@@ -27,11 +27,11 @@
 
 int main()
 {
-    std::cout  << "Model of Energy, Hierarchy, and Managment" << std::endl;
+    std::cout  << "Model of Energy and Government Share of Employment" << std::endl;
 
 
     // model parameters
-    int n_iterations = 80000;    // number of model iterations
+    int n_iterations = 10000;    // number of model iterations
     int n_firms = 1000000;      // number of firms in simulation
 
 
@@ -54,13 +54,6 @@ int main()
 
 
 
-    // span of control range
-    arma::vec span_range;
-    span_range.load("span_range.txt");
-    double span_lower = span_range[0];
-    double span_upper = span_range[1];
-
-
     // output matrices
     //////////////////////////////////////////////////////////////////////////////////
     change_directory("data", "results");
@@ -74,7 +67,7 @@ int main()
 
     auto start = std::chrono::system_clock::now();
     boost::progress_display show_progress(n_iterations);
-    #pragma omp parallel for firstprivate(n_firms)
+    #pragma omp parallel for firstprivate(n_firms, a, b, energy_low, energy_high)
 
     for(int iteration = 0; iteration < n_iterations; iteration++){
 
@@ -90,31 +83,46 @@ int main()
         double alpha = power_law_alpha(firm_size_predict) - 0.1;
 
 
-        // get span of control from uniform distribution
-        arma::vec rand_span =  arma::randu<arma::vec>(1);
-        double span = span_lower +(span_upper - span_lower)*rand_span[0];
-
-
         // size distribution of firms
         arma::uvec  firm_vec = rpld(n_firms, 1, alpha, 1000000, 0, true); // power law firm size distribution
 
         // mean firm size
         double total_emp = arma::sum(firm_vec);
-        double n_firms = firm_vec.size();
-        double mean_firm_size =  total_emp / n_firms;
-
-        // management fraction
-        double management_fraction = manager_frac(firm_vec, span);
-
+        double n_firms_double = firm_vec.size();
+        double mean_firm_size =  total_emp / n_firms_double;
 
         // energy use
         double energy_pc = pow(mean_firm_size / a, 1/b);
 
+        // government size
+
+            // number of 'firms' in government (lognormal variate)
+            std::random_device rd;
+            std::mt19937 gen(rd());
+            std::lognormal_distribution<> lnorm(3, 2.5);
+
+            int gov_n_firm = lnorm(gen);
+
+            if (gov_n_firm < 3){
+                gov_n_firm = 3;
+                }
+                else {
+                    if (gov_n_firm > 10000) { gov_n_firm = 10000;}
+                }
+
+
+            arma::uvec government = firm_vec.tail(gov_n_firm);
+
+            // government employment
+            double gov_employment = arma::sum(government);
+            double gov_employment_share = gov_employment / total_emp;
+
+
         // results output
         results(iteration, 0) = alpha;
-        results(iteration, 1) = span;
-        results(iteration, 2) = mean_firm_size;
-        results(iteration, 3) = management_fraction;
+        results(iteration, 1) = mean_firm_size;
+        results(iteration, 2) = gov_employment_share;
+        results(iteration, 3) = gov_n_firm;
         results(iteration, 4) = energy_pc;
 
 
@@ -131,7 +139,7 @@ int main()
     // output results
     ////////////////////////////////////////////////////////////////
 
-    results.save("model_result.csv", arma::csv_ascii);
+    results.save("mod_gov_result.csv", arma::csv_ascii);
 
 
 	return 0;

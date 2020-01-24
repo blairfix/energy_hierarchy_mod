@@ -35,7 +35,7 @@ int main()
 
     // model parameters
     int n_iterations =  200;    // number of model iterations
-    int n_iteration_final = 5000;
+    int n_iteration_final = 10000;
 
     int n_firms = 1000000;      // number of firms in simulation
 
@@ -112,7 +112,7 @@ int main()
         for(int alpha_iteration = 0; alpha_iteration < n_energy_steps; alpha_iteration++){
 
             // size distribution of firms
-            arma::uvec  firm_vec = rpld(n_firms, 1, alpha_vec[alpha_iteration], 2300000,  true); // power law firm size distribution
+            arma::uvec  firm_vec = rpld(n_firms, 1, alpha_vec[alpha_iteration], 1000000, 0,  true); // power law firm size distribution
 
             // mean firm size
             double total_emp = arma::sum(firm_vec);
