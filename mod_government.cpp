@@ -31,7 +31,7 @@ int main()
 
 
     // model parameters
-    int n_iterations = 10000;    // number of model iterations
+    int n_iterations = 100000;    // number of model iterations
     int n_firms = 1000000;      // number of firms in simulation
 
 
@@ -113,7 +113,7 @@ int main()
 
             arma::uvec government = firm_vec.tail(gov_n_firm);
 
-            // government employment
+            // government share of employment
             double gov_employment = arma::sum(government);
             double gov_employment_share = gov_employment / total_emp;
 
