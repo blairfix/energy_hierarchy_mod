@@ -22,7 +22,7 @@
 
 
 /*
-This code finds the span of control (for the hierarchy model)
+This code finds the number of firms in government
 that best fits the empirical data.
 */
 
@@ -33,8 +33,8 @@ int main()
 
 
     // model parameters
-    int n_iterations =  200;    // number of model-fit iterations
-    int n_energy_steps_final = 10000; // number of energy steps in final best-fit model
+    int n_iterations =  400;    // number of model-fit iterations
+    int n_energy_steps_final = 40000; // number of energy steps in final best-fit model
 
     int n_firms = 1000000;      // number of firms in simulation
 
@@ -129,10 +129,28 @@ int main()
         }
 
         // get model error
-        // interpolate model at empirical energy values
 
+        // first bin model data
+
+        double adjust = 2;
+        arma::vec energy_bins = arma::round( arma::log( mod_energy_pc )*adjust ) /  adjust ;
+        arma::vec energy_bins_unique = arma::unique( energy_bins);
+
+        int n_energy_bins = energy_bins_unique.size();
+        arma::vec mod_gov_mean(n_energy_bins);
+
+        for(int i = 0; i < n_energy_bins; i++){
+
+            arma::uvec ids = arma::find(energy_bins == energy_bins_unique[i]);  // Find indices
+            arma::vec gov_select = mod_government_fraction.elem(ids);
+            mod_gov_mean[i] = arma::mean(gov_select);        // mean of government fraction
+
+        }
+
+
+        // interpolate binned model at empirical energy values
         arma::vec mod_government_interp;
-        arma::interp1(mod_energy_pc, mod_government_fraction, empirical_energy_pc, mod_government_interp);
+        arma::interp1(energy_bins_unique, mod_gov_mean, empirical_energy_pc, mod_government_interp);
 
         double mod_error =  arma::sum( arma::pow( arma::log(mod_government_interp) - arma::log(empirical_government), 2) );
 
@@ -215,7 +233,6 @@ int main()
 
     arma::vec best_gov_output(1);
     best_gov_output[0] = best_gov_n_firms;
-
     best_gov_output.save("government_nfirms_best.csv", arma::csv_ascii);
 
 	return 0;

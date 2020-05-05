@@ -31,7 +31,7 @@ int main()
 
 
     // model parameters
-    int n_iterations = 100000;    // number of model iterations
+    int n_iterations = 200000;    // number of model iterations
     int n_firms = 1000000;      // number of firms in simulation
 
 

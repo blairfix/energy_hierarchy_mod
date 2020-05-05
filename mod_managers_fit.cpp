@@ -34,8 +34,8 @@ int main()
 
 
     // model parameters
-    int n_iterations =  200;    // number of model iterations
-    int n_energy_steps_final = 10000; // number of energy steps in final best-fit model
+    int n_iterations =  400;    // number of model iterations
+    int n_energy_steps_final = 20000; // number of energy steps in final best-fit model
 
     int n_firms = 1000000;      // number of firms in simulation
 
@@ -208,7 +208,7 @@ int main()
     // output results
     ////////////////////////////////////////////////////////////////
 
-    best_model.save("model_fit.csv", arma::csv_ascii);
+    best_model.save("model_manager_fit.csv", arma::csv_ascii);
 
     arma::vec best_span_output(1);
     best_span_output[0] = best_span;

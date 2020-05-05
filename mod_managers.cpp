@@ -131,7 +131,7 @@ int main()
     // output results
     ////////////////////////////////////////////////////////////////
 
-    results.save("model_result.csv", arma::csv_ascii);
+    results.save("model_manager_result.csv", arma::csv_ascii);
 
 
 	return 0;

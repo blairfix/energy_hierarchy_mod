@@ -35,7 +35,7 @@ rpld function inputs:
 
 
 
-arma::uvec rpld(   int n,
+arma::vec rpld(   int n,
                    int xmin,
                    double alpha,
                    int discrete_max = 10000,
@@ -46,7 +46,7 @@ arma::uvec rpld(   int n,
 {
 
     // output
-    arma::uvec rng = arma::zeros<arma::uvec>(n);
+    arma::vec rng = arma::zeros<arma::vec>(n);
 
 
     // set upper limit of uniform dist
