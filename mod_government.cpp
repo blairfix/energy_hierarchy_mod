@@ -20,13 +20,14 @@
 
 
 /*
-
+Returns the government share of employment and energy use per capita
+Government is modeled as the n largest firms
 */
 
 
 int main()
 {
-    std::cout  << "Model of Energy and Government Share of Employment" << std::endl;
+    std::cout  << "Model of Energy and Government Size" << std::endl;
 
 
     // model parameters
