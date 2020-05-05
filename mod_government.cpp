@@ -1,5 +1,4 @@
 #include "core/rpld.h"
-#include "core/manager_frac.h"
 
 #include "utils/change_dir.h"
 #include "utils/power_law_alpha.h"
@@ -84,7 +83,12 @@ int main()
 
 
         // size distribution of firms
-        arma::uvec  firm_vec = rpld(n_firms, 1, alpha, 1000000, 0, true); // power law firm size distribution
+        arma::vec  firm_vec = rpld( n_firms,
+                                    1,
+                                    alpha,
+                                    1000000,
+                                    50000000,
+                                    true);
 
         // mean firm size
         double total_emp = arma::sum(firm_vec);
@@ -111,7 +115,7 @@ int main()
                 }
 
 
-            arma::uvec government = firm_vec.tail(gov_n_firm);
+            arma::vec government = firm_vec.tail(gov_n_firm);
 
             // government share of employment
             double gov_employment = arma::sum(government);
