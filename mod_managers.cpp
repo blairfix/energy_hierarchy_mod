@@ -1,8 +1,11 @@
 #include "core/rpld.h"
 #include "core/manager_frac.h"
+#include "core/mod_power.h"
 
 #include "utils/change_dir.h"
+#include "utils/gini.h"
 #include "utils/power_law_alpha.h"
+#include "utils/sample.h"
 
 #include <algorithm>
 #include <boost/progress.hpp>
@@ -31,8 +34,9 @@ int main()
 
 
     // model parameters
-    int n_iterations = 80000;    // number of model iterations
-    int n_firms = 1000000;      // number of firms in simulation
+    int n_iterations = 100;    // number of model iterations
+    int n_firms = 1000000;       // number of firms in simulation
+    int manage_thresh = 3;       // management threshold
 
 
     // load  data
@@ -64,7 +68,7 @@ int main()
     // output matrices
     //////////////////////////////////////////////////////////////////////////////////
     change_directory("data", "results");
-    arma::mat results(n_iterations, 5);   // result matrix
+    arma::mat results(n_iterations, 6);   // result matrix
 
 
     //********************************************************************************************
@@ -96,7 +100,12 @@ int main()
 
 
         // size distribution of firms
-        arma::uvec  firm_vec = rpld(n_firms, 1, alpha, 1000000, 0, true); // power law firm size distribution
+        arma::vec  firm_vec = rpld( n_firms,
+                                    1,
+                                    alpha,
+                                    1000000,
+                                    50000000,
+                                    true);
 
         // mean firm size
         double total_emp = arma::sum(firm_vec);
@@ -104,7 +113,17 @@ int main()
         double mean_firm_size =  total_emp / n_firms;
 
         // management fraction
-        double management_fraction = manager_frac(firm_vec, span);
+        double management_fraction = manager_frac(  firm_vec,
+                                                    span,
+                                                    manage_thresh);
+
+
+        // hierarchical power
+        arma::vec power_vec = mod_power( firm_vec, span);
+
+            // sample from power_vec and get gini index
+            arma::vec power_sample = sample_no_replace(power_vec, 1000000);
+            double power_gini = gini(power_sample);
 
 
         // energy use
@@ -116,7 +135,7 @@ int main()
         results(iteration, 2) = mean_firm_size;
         results(iteration, 3) = management_fraction;
         results(iteration, 4) = energy_pc;
-
+        results(iteration, 5) = power_gini;
 
         ++show_progress;
    }
