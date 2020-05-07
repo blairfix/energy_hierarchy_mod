@@ -193,7 +193,7 @@ int main()
             // size distribution of firms
             arma::vec  firm_vec = rpld( n_firms,
                                         1,
-                                        alpha_vec[alpha_iteration],
+                                        alpha_vec_final[alpha_iteration],
                                         1000000,
                                         max_firm,
                                         true);
