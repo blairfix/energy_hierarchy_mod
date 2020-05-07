@@ -4,6 +4,7 @@
 
 #include "utils/change_dir.h"
 #include "utils/gini.h"
+#include "utils/global_reaching_centrality.h"
 #include "utils/power_law_alpha.h"
 #include "utils/sample.h"
 
@@ -24,17 +25,17 @@
 
 
 /*
-
+Models the management fraction of employment as it relates to energy use.
 */
 
 
 int main()
 {
-    std::cout  << "Model of Energy, Hierarchy, and Managment" << std::endl;
+    std::cout  << "Model of energy, hierarchy and managers" << std::endl;
 
 
     // model parameters
-    int n_iterations = 100;    // number of model iterations
+    int n_iterations = 400000;    // number of model iterations
     int n_firms = 1000000;       // number of firms in simulation
     int manage_thresh = 3;       // management threshold
 
@@ -49,14 +50,11 @@ int main()
     double a =  energy_firm_params[0];
     double b = energy_firm_params[1];
 
-
     // energy range range
     arma::vec energy_range;
     energy_range.load("energy_range.txt");
     double energy_low = energy_range[0];
     double energy_high = energy_range[1];
-
-
 
     // span of control range
     arma::vec span_range;
@@ -64,11 +62,17 @@ int main()
     double span_lower = span_range[0];
     double span_upper = span_range[1];
 
+    // maximum firm size
+    arma::vec max_firm_vec;
+    max_firm_vec.load("max_firm.txt");
+    int max_firm = max_firm_vec[0];
+
+
 
     // output matrices
     //////////////////////////////////////////////////////////////////////////////////
     change_directory("data", "results");
-    arma::mat results(n_iterations, 6);   // result matrix
+    arma::mat results(n_iterations, 7);   // result matrix
 
 
     //********************************************************************************************
@@ -104,7 +108,7 @@ int main()
                                     1,
                                     alpha,
                                     1000000,
-                                    50000000,
+                                    max_firm,
                                     true);
 
         // mean firm size
@@ -118,12 +122,17 @@ int main()
                                                     manage_thresh);
 
 
-        // hierarchical power
+        // hierarchical power and global reaching centrality
         arma::vec power_vec = mod_power( firm_vec, span);
 
             // sample from power_vec and get gini index
             arma::vec power_sample = sample_no_replace(power_vec, 1000000);
             double power_gini = gini(power_sample);
+
+            // global reaching centrality
+            arma::vec n_subordinates = power_sample - 1;
+            double global_reaching_centrality = grc(n_subordinates);
+
 
 
         // energy use
@@ -136,6 +145,7 @@ int main()
         results(iteration, 3) = management_fraction;
         results(iteration, 4) = energy_pc;
         results(iteration, 5) = power_gini;
+        results(iteration, 6) = global_reaching_centrality;
 
         ++show_progress;
    }

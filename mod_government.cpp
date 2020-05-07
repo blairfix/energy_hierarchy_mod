@@ -53,6 +53,11 @@ int main()
     double energy_high = energy_range[1];
 
 
+    // maximum firm size
+    arma::vec max_firm_vec;
+    max_firm_vec.load("max_firm.txt");
+    int max_firm = max_firm_vec[0];
+
 
     // output matrices
     //////////////////////////////////////////////////////////////////////////////////
@@ -88,7 +93,7 @@ int main()
                                     1,
                                     alpha,
                                     1000000,
-                                    50000000,
+                                    max_firm,
                                     true);
 
         // mean firm size

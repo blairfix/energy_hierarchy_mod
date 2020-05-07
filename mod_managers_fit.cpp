@@ -36,8 +36,8 @@ int main()
     // model parameters
     int n_iterations =  400;    // number of model iterations
     int n_energy_steps_final = 20000; // number of energy steps in final best-fit model
-
     int n_firms = 1000000;      // number of firms in simulation
+    int manage_thresh = 3;       // management threshold
 
     // load  data
     /////////////////////////////////////////////////////////////
@@ -67,6 +67,11 @@ int main()
     empirical_data.load("energy_managers.txt");
     arma::vec empirical_energy_pc = empirical_data.col(0);
     arma::vec empirical_manager = empirical_data.col(1)/100;
+
+    // maximum firm size
+    arma::vec max_firm_vec;
+    max_firm_vec.load("max_firm.txt");
+    int max_firm = max_firm_vec[0];
 
 
     // output matrices
@@ -112,7 +117,12 @@ int main()
         for(int alpha_iteration = 0; alpha_iteration < n_energy_steps; alpha_iteration++){
 
             // size distribution of firms
-            arma::uvec  firm_vec = rpld(n_firms, 1, alpha_vec[alpha_iteration], 1000000, 0,  true); // power law firm size distribution
+            arma::vec  firm_vec = rpld( n_firms,
+                                        1,
+                                        alpha_vec[alpha_iteration],
+                                        1000000,
+                                        max_firm,
+                                        true);
 
             // mean firm size
             double total_emp = arma::sum(firm_vec);
@@ -120,7 +130,10 @@ int main()
             double mean_firm_size =  total_emp / n_firms;
 
             // management fraction
-            mod_management_fraction[alpha_iteration] = manager_frac(firm_vec, span);
+            mod_management_fraction[alpha_iteration] = manager_frac(firm_vec,
+                                                                    span,
+                                                                    manage_thresh);
+
 
             // energy use
             mod_energy_pc[alpha_iteration] = pow(mean_firm_size / a, 1/b);
@@ -177,8 +190,13 @@ int main()
 
     for(int alpha_iteration = 0; alpha_iteration < n_energy_steps_final; alpha_iteration++){
 
-        // size distribution of firms
-        arma::uvec  firm_vec = rpld(n_firms, 1, alpha_vec_final[alpha_iteration], 2300000, 0,  true); // power law firm size distribution
+            // size distribution of firms
+            arma::vec  firm_vec = rpld( n_firms,
+                                        1,
+                                        alpha_vec[alpha_iteration],
+                                        1000000,
+                                        max_firm,
+                                        true);
 
         // mean firm size
         double total_emp = arma::sum(firm_vec);
@@ -186,7 +204,10 @@ int main()
         double mean_firm_size =  total_emp / n_firms;
 
         // management fraction
-        mod_management_fraction[alpha_iteration] = manager_frac(firm_vec, best_span);
+        mod_management_fraction[alpha_iteration] = manager_frac(firm_vec,
+                                                                best_span,
+                                                                manage_thresh);
+
 
         // energy use
         mod_energy_pc[alpha_iteration] = pow(mean_firm_size / a, 1/b);

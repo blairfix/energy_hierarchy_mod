@@ -67,6 +67,11 @@ int main()
     arma::vec empirical_energy_pc = empirical_data.col(0);
     arma::vec empirical_government = empirical_data.col(1);
 
+    // maximum firm size
+    arma::vec max_firm_vec;
+    max_firm_vec.load("max_firm.txt");
+    int max_firm = max_firm_vec[0];
+
 
     // output matrices
     //////////////////////////////////////////////////////////////////////////////////
@@ -110,8 +115,16 @@ int main()
         // loop over alpha vector
         for(int alpha_iteration = 0; alpha_iteration < n_energy_steps; alpha_iteration++){
 
+
+
             // size distribution of firms
-            arma::uvec  firm_vec = rpld(n_firms, 1, alpha_vec[alpha_iteration], 1000000, 0,  true); // power law firm size distribution
+            arma::vec  firm_vec = rpld( n_firms,
+                                        1,
+                                        alpha_vec[alpha_iteration],
+                                        1000000,
+                                        max_firm,
+                                        true);
+
 
             // mean firm size
             double total_emp = arma::sum(firm_vec);
@@ -119,7 +132,7 @@ int main()
             double mean_firm_size =  total_emp / n_firms;
 
             // government fraction of employment
-            arma::uvec government = firm_vec.tail(gov_n_firm);
+            arma::vec government = firm_vec.tail(gov_n_firm);
             double gov_employment = arma::sum(government);
             mod_government_fraction[alpha_iteration] = gov_employment / total_emp;
 
@@ -197,7 +210,12 @@ int main()
     for(int alpha_iteration = 0; alpha_iteration < n_energy_steps_final; alpha_iteration++){
 
         // size distribution of firms
-        arma::uvec  firm_vec = rpld(n_firms, 1, alpha_vec_final[alpha_iteration], 2300000, 0,  true); // power law firm size distribution
+        arma::vec  firm_vec = rpld( n_firms,
+                                    1,
+                                    alpha_vec[alpha_iteration],
+                                    1000000,
+                                    max_firm,
+                                    true);
 
         // mean firm size
         double total_emp = arma::sum(firm_vec);
@@ -205,7 +223,7 @@ int main()
         double mean_firm_size =  total_emp / n_firms;
 
         // government fraction of employment
-        arma::uvec government = firm_vec.tail(best_gov_n_firms);
+        arma::vec government = firm_vec.tail(best_gov_n_firms);
         double gov_employment = arma::sum(government);
         mod_government_fraction[alpha_iteration] = gov_employment / total_emp;
 
