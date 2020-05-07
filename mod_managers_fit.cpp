@@ -30,7 +30,7 @@ that best fits the empirical data.
 
 int main()
 {
-    std::cout  << "Best Fit Model of Energy, Hierarchy, and Management" << std::endl << std::endl;
+    std::cout  << "Best fit model of energy, hierarchy, and management" << std::endl << std::endl;
 
 
     // model parameters

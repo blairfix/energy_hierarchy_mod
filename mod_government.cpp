@@ -27,7 +27,7 @@ Government is modeled as the n largest firms
 
 int main()
 {
-    std::cout  << "Model of Energy and Government Size" << std::endl;
+    std::cout  << "Model of energy and government Size" << std::endl;
 
 
     // model parameters
