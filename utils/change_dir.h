@@ -2,15 +2,11 @@
 #ifndef CHANGE_DIR_H
 #define CHANGE_DIR_H
 
-
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
-#include <iostream>
 
-#include <algorithm>
-#include <string>
-
+// changes the directory 
 
 void change_directory(std::string rmv, std::string add){
 
@@ -23,12 +19,13 @@ void change_directory(std::string rmv, std::string add){
     dir.append(add);
     const char* dir_new = dir.c_str();
 
-    chdir(dir_new);
-
-    //std::cout << dir_new << std::endl;
-
+    int ret = chdir(dir_new);
+	if (ret != 0){
+		perror("chdir() failed");
+	}	
+	
+	
 }
-
 
 
 #endif
