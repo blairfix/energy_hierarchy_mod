@@ -20,16 +20,18 @@ arma::vec hierarchy_func(const double &emp, const double &span, int & max_rank){
 
     // hierarchical employment vector
     // (leave exta elements at end of vector for possible overshoot
-    arma::vec h = arma::zeros<arma::vec>( n_levels + 2);
+    int max_h = n_levels + 3;
+    arma::vec h = arma::zeros<arma::vec>( max_h );
 
     // get size of bottom rank
     double base =  ceil( emp*( 1 - 1/span )/( 1 - std::pow(1/span, n_levels) ) );
+    h[0] = base;
 
     // correct to allow firm size of 1
     if( h[0] < 1 ){ h[0] = 1 ;}
 
     int i = 0;
-    while( h[i] != 0 ){
+    while( h[i] != 0  & i < max_h  ){
 
         i++;
         h[i] =  floor( base / std::pow(span, i) );
