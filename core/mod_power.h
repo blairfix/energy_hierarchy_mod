@@ -11,17 +11,16 @@
 #define ARMA_DONT_USE_HDF5
 #include <armadillo>
 
-
 /*
-
+Creates a distribution of hierarchical power for
+all individuals in all firms
 */
 
 arma::vec mod_power(const arma::vec &firm_vec,
-                    double span
+                    const double &span
                     )
 
 {
-
     // output vector
     double n_people = arma::sum(firm_vec);
     arma::vec power_vec(n_people);
@@ -51,7 +50,6 @@ arma::vec mod_power(const arma::vec &firm_vec,
                     people_index++;
                 }
             } // end loop over levels
-
 
     }
 

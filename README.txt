@@ -21,18 +21,14 @@ To compile this code, you will need to install the following libraries:
     C++ BOOST
 
 
-
-
 COMPILE
 =======
 
 To compile using the GCC compiler, use the following commands:
 
+    g++   -O3 -fopenmp -std=c++11   -fopenmp  mod_managers.cpp  -o  mod_managers   -llapack -lopenblas -lgomp -lpthread -larmadillo
 
-    g++   -O3 -fopenmp -std=c++11   -fopenmp  mod_capitalist.cpp  -o  mod_capitalist   -llapack -lopenblas -lgomp -lpthread -larmadillo
-
-
-
+For other models (mod_government, mod_government_fit, mod_managers_fit), replace "mod_managers" with the appropriate file name
 
 
 Execute

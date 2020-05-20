@@ -162,16 +162,8 @@ arma::vec rpld(   int n,
 
     }  // end discrete_max ifelse
 
-
-
     return rng;
 
 }
 
-
 #endif
-
-
-
-
-

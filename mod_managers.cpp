@@ -19,7 +19,7 @@
 #include <vector>
 
 #define ARMA_DONT_USE_WRAPPER
-#define ARMA_NO_DEBUG
+//#define ARMA_NO_DEBUG
 #define ARMA_DONT_USE_HDF5
 #include <armadillo>
 

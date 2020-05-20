@@ -16,7 +16,9 @@ The input vector contains aggregate employment by hierarchical rank.
 */
 
 
-arma::vec hierarchical_power_function(const arma::vec &hierarchy_vec, int max_rank )
+arma::vec hierarchical_power_function(const arma::vec &hierarchy_vec,
+                                      const int &max_rank
+                                      )
 {
 
     double n_subordinate = 0;
@@ -35,12 +37,6 @@ arma::vec hierarchical_power_function(const arma::vec &hierarchy_vec, int max_ra
 
     return(mean_hierarchical_power);
 
-
 }
-
-
-
-
-
 
 #endif

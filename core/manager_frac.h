@@ -19,8 +19,8 @@ in all firms.
 */
 
 double manager_frac(const arma::vec &firm_vec,
-                    double span,
-                    int manage_rank_thresh
+                    const double &span,
+                    const int &manage_rank_thresh
                     )
 
 {

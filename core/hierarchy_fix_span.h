@@ -13,7 +13,11 @@ The span of control is fixed for all hierarchical ranks.
 */
 
 
-arma::vec hierarchy_func(const double &emp, const double &span, int & max_rank){
+arma::vec hierarchy_func(   const double &emp,
+                            const double &span,
+                            int &max_rank
+                        )
+{
 
     // number of hierarchical levels in firm
     int n_levels = round( log(emp*(span-1)+1)/log(span) );
@@ -39,13 +43,15 @@ arma::vec hierarchy_func(const double &emp, const double &span, int & max_rank){
         h[i] = level;
 
         if( level == 0){
+
             max_rank = i;
             stop = true;
-        }
 
-        if( i == max_h - 1){
+        } else if( i == max_h - 1){
+
             max_rank = i + 1;
             stop = true;
+
         }
 
         i++;
