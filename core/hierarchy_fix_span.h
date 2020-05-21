@@ -20,7 +20,7 @@ arma::vec hierarchy_func(   const double &emp,
 {
 
     // number of hierarchical levels in firm
-    int n_levels = round( log(emp*(span-1)+1)/log(span) );
+    int n_levels = floor( log(emp*(span-1)+1)/log(span) );
 
     // get size of bottom rank
     double base =  emp*( 1 - 1/span )/( 1 - std::pow(1/span, n_levels) ) ;
@@ -39,7 +39,7 @@ arma::vec hierarchy_func(   const double &emp,
 
     while( stop == false ){
 
-        int level = round( base / std::pow(span, i) );
+        int level = floor( base / std::pow(span, i) );
         h[i] = level;
 
         if( level == 0){
