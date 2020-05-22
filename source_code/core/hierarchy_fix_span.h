@@ -31,7 +31,7 @@ arma::vec hierarchy_func(   const double &emp,
     arma::vec h = arma::zeros<arma::vec>( max_h );
 
     // correct base to allow firm size of 1
-    h[0] = round( base );
+    h[0] = floor( base );
     if( h[0] < 1 ){ h[0] = 1 ;}
 
     int i = 1;
