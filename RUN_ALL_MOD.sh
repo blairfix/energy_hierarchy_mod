@@ -25,8 +25,8 @@ echo "Running models"
 cd ./executables
 ./mod_managers
 ./mod_managers_fit
-#./mod_government
-#./mod_government_fit
+./mod_government
+./mod_government_fit
 cd ..
 
 
