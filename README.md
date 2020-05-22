@@ -48,6 +48,11 @@ The cpp files inside `source_code` contain the model implementations.
 
 The `core` directory contains the core algorithms used to construct hierarchies and model the size distribution of firms. The `utils` directory contains various statistical functions and utilities used by the model.
 
+### Get the R versions of `energy_hierarchy_model` functions
+
+If you're an R user, I've built R versions of the functions used by the `energy_hierarchy_model`. They're available here: https://github.com/blairfix/hmod
+
+
 
 
 
