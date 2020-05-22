@@ -15,6 +15,10 @@ g++ -O3 -fopenmp -std=c++11  mod_government.cpp  -o  mod_government   -llapack -
 
 g++ -O3 -fopenmp -std=c++11  mod_government_fit.cpp  -o  mod_government_fit   -llapack -lopenblas -lgomp -lpthread -larmadillo -march=native
 
+# Make directories
+cd .. 
+mkdir executables
+mkdir results
 
 # Move binaries to 'executables' directory
 cd ..
