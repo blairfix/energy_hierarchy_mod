@@ -21,7 +21,6 @@ mkdir executables
 mkdir results
 
 # Move binaries to 'executables' directory
-cd ..
 ./move.sh
 
 # Run
