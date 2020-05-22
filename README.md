@@ -32,7 +32,7 @@ If you are using Linux, the bash script `RUN_ALL_MOD.sh` will compile and run th
 g++ -O3 -fopenmp -std=c++11 -fopenmp mod_managers.cpp  -o mod_managers -llapack -lopenblas -lgomp -lpthread -larmadillo
 ```
 
-The resulting executable must be put in the `executable` directory to run. 
+The resulting executable must be put in the `executable` directory to run. Output will go in the the `results` directory. The `RUN_ALL_MOD.sh` script will make these directories. If you don't use this script, you'll need to create these directories before running the model
 
 ### Structure
 
